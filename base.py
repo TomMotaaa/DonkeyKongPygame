@@ -1,59 +1,82 @@
-# Import the pygame module
-import pygame, time, random
+# Importa o módulo do pygame
+import pygame
+from pygame.locals import (
+    K_ESCAPE,
+    K_SPACE,
+    KEYDOWN,
+    QUIT,
+)
+import kong
+import barrel
+import cloud
 
-from pygame.locals import *
+pygame.mixer.init()
 
-def main2():
-    # variáveis do jogo
-    player_stand = pygame.image.load("assets/pixil-frame-bro.png").convert_alpha()
-    player_stand = pygame.transform.scale(player_stand, (150, 150))
-    quit = False
-    x = 0
-    y = 0
-    while not quit:
-        # muda a cor da tela para azul
-        window.fill((135, 206, 235))
-        # eventos
-        keyspressed = pygame.key.get_pressed()
-        for event in pygame.event.get():
-            print(event)
-            if event.type == QUIT:
-                quit = True
-            
-        if keyspressed[ord("a")]:
-            x = x - 50
-        if keyspressed[ord("d")]:
-            x = x + 50
-        if keyspressed[ord("w")]:
-            y = y - 50
-        if keyspressed[ord("s")]:
-            y = y + 50
-        if  y < 0:
-            y = 0
-        if y >= window.get_height():
-            y = window.get_height()-50
-        if x < 0:
-            x = 0
-        if x >= window.get_width():
-            x = window.get_width()-50
+# inicializa o pygame
+pygame.init()
+pygame.display.set_caption("Jogo Donkey Kong")
 
-        #player = Rect(x, y, 50, 50)
-        #pygame.draw.rect(window, (204, 0, 255), player)
-        window.blit(player_stand, (x, y))
+# https://instrumentalfx.co/steven-universe-soundtrack-opening-instrumental/
+pygame.mixer.music.load("assets/steven-universe-instrumental.mp3")
+pygame.mixer.music.play(loops=-1)
 
-        # atualiza a tela
-        pygame.display.update()
-        clock.tick(25)
+# constante para largura e altura da tela
+width = 1000
+height = 200
+player = kong.Player(width, height)
+barril = barrel.Enemy(width, height)
+barril = pygame.sprite.Group()
+nuvem = cloud.Cloud(width, height)
+nuvem = pygame.sprite.Group()
+all_sprite = pygame.sprite.Group()
+all_sprite.add(player)
 
+window = pygame.display.set_mode((width, height))
 
-# Inicializa e roda o jogo
-if __name__ == "__main__":
-    width, height = 1000, 200
-    pygame.init()
-    pygame.mixer.init()
-    pygame.display.set_caption("Jogo Donkey Kong")
-    window = pygame.display.set_mode((width, height))
-    clock = pygame.time.Clock()
-    main2()
-    pygame.quit()
+clock = pygame.time.Clock()
 
+ADDENEMY = pygame.USEREVENT + 1
+pygame.time.set_timer(ADDENEMY, 250)
+ADDCLOUD = pygame.USEREVENT + 2
+pygame.time.set_timer(ADDCLOUD, 1000)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                running = False
+        
+        elif event.type == QUIT:
+            running = False
+
+        elif event.type == ADDENEMY:
+            new_enemy = barrel.Enemy(width, height)
+            barril.add(new_enemy)
+            all_sprite.add(new_enemy)
+
+        elif event.type == ADDCLOUD:
+            new_cloud = cloud.Cloud(width, height)
+            nuvem.add(new_cloud)
+            all_sprite.add(new_cloud)
+    
+    pressed_keys = pygame.key.get_pressed()
+
+    player.update(pressed_keys)
+    barril.update()
+    nuvem.update()
+    
+    window.fill((135, 206, 235))
+
+    for entity in all_sprite:
+        window.blit(entity.surf, entity.rect)
+
+    pygame.display.flip()
+
+    clock.tick(30)
+
+pygame.mixer.music.stop()
+pygame.mixer.quit()
+pygame.quit()
+
+# https://coderslegacy.com/python/pygame-gravity-and-jumping/
