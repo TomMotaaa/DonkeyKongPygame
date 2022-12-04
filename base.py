@@ -9,6 +9,7 @@ from pygame.locals import (
 import kong
 import barrel
 import cloud
+import plataforma
 
 pygame.mixer.init()
 
@@ -21,14 +22,16 @@ pygame.mixer.music.load("assets/steven-universe-instrumental.mp3")
 pygame.mixer.music.play(loops=-1)
 
 # constante para largura e altura da tela
-width = 1000
-height = 200
+width = 600
+height = 450
 player = kong.Player(width, height)
 barril = barrel.Enemy(width, height)
 barril = pygame.sprite.Group()
 nuvem = cloud.Cloud(width, height)
 nuvem = pygame.sprite.Group()
+chao = plataforma.Platform()
 all_sprite = pygame.sprite.Group()
+all_sprite.add(chao)
 all_sprite.add(player)
 
 window = pygame.display.set_mode((width, height))
@@ -59,10 +62,11 @@ while running:
             new_cloud = cloud.Cloud(width, height)
             nuvem.add(new_cloud)
             all_sprite.add(new_cloud)
+            
     
     pressed_keys = pygame.key.get_pressed()
 
-    player.update(pressed_keys)
+    player.move(pressed_keys)
     barril.update()
     nuvem.update()
     

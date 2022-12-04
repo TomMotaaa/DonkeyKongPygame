@@ -1,10 +1,12 @@
 import pygame
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-)
+from pygame.locals import *
+
+vec = pygame.math.Vector2
+ACC = 0.5
+FRIC = -0.12
+WIDTH = 600
+HEIGHT = 450
+
 
 class Player(pygame.sprite.Sprite) :
     def __init__(self, width, heigth):
@@ -15,21 +17,24 @@ class Player(pygame.sprite.Sprite) :
         self.surf = pygame.transform.scale(self.surf, (150, 150))
         self.rect = self.surf.get_rect()
 
-    def update(self, keys_pressed):
-        if keys_pressed[ord("w")]:
-            self.rect.move_ip(0, -5)
-        if keys_pressed[ord("s")]:
-            self.rect.move_ip(0, 5)
-        if keys_pressed[ord("a")]:
-            self.rect.move_ip(-5, 0)
-        if keys_pressed[ord("d")]:
-            self.rect.move_ip(5, 0)
+        self.pos = vec((10, 385))
+        self.vel = vec((0,0))
+        self.acc = vec((0,0))
 
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > self.width:
-            self.rect.right = self.width
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom >= self.heigth:
-            self.rect.bottom = self.heigth 
+    def move(self, keys_pressed):
+        self.acc = vec((0,0.5))
+        if keys_pressed[ord("a")]:
+            self.acc.x = -ACC
+        if keys_pressed[ord("d")]:
+            self.acc.x = ACC
+
+        self.acc.x += self.vel.x * FRIC
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+
+        if self.pos.x > WIDTH:
+            self.pos.x = 0
+        if self.pos.x < 0:
+            self.pos.x = WIDTH
+
+        self.rect.midbottom = self.pos
