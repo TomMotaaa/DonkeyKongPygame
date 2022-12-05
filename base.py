@@ -73,7 +73,7 @@ while running:
 
     pygame.display.flip()
 
-    clock.tick(60)
+    clock.tick(30)
 
 pygame.mixer.music.stop()
 pygame.mixer.quit()

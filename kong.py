@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite) :
         self.heigth = heigth
         self.surf = pygame.image.load("assets/pixil-frame-bro-star.png")
         self.surf = pygame.transform.scale(self.surf, (150, 150))
-        self.rect = self.surf.get_rect()
+        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
 
         self.pos = vec((10, 385))
         self.vel = vec((0,0))
