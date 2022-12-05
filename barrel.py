@@ -9,10 +9,10 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(width + 20, width + 100),
-                random.randint(0, heigth-80)
+                heigth-35
             )
         )
-        self.speed = random.randint(3, 20)
+        self.speed = 4
 
     def update(self):
         self.rect.move_ip(-self.speed, 0)

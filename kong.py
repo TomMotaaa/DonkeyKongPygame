@@ -1,11 +1,13 @@
 import pygame
 from pygame.locals import *
+import plataforma
 
 vec = pygame.math.Vector2
 ACC = 0.5
 FRIC = -0.12
 WIDTH = 800
 HEIGHT = 400
+Plataforma1 = plataforma.Platform()
 
 
 class Player(pygame.sprite.Sprite) :
@@ -22,7 +24,7 @@ class Player(pygame.sprite.Sprite) :
         self.acc = vec((0,0))
 
     def move(self, keys_pressed):
-        self.acc = vec((0,0))
+        self.acc = vec((0,0.5))
         if keys_pressed[ord("a")]:
             self.acc.x = -ACC
         if keys_pressed[ord("d")]:
@@ -40,4 +42,14 @@ class Player(pygame.sprite.Sprite) :
         self.rect.midbottom = self.pos
 
     def jump(self):
-        self.vel.y = -15
+        self.vel.y = -10
+        
+    def update(self):
+        hits = pygame.sprite.spritecollide(self.surf, plataforma, False)
+        if self.surf.vel.y > 0:
+            if hits:
+                self.pos.y = hits[0].rect.top + 1
+                self.vel.y = 0
+                
+    plataforma = pygame.sprite.Group()
+    plataforma.add(Plataforma1)
