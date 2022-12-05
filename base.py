@@ -13,12 +13,17 @@ pygame.init()
 pygame.display.set_caption("Jogo Donkey Kong")
 
 # https://instrumentalfx.co/steven-universe-soundtrack-opening-instrumental/
-# pygame.mixer.music.load("assets/steven-universe-instrumental.mp3")
-# pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.load("assets/steven-universe-instrumental.mp3")
+pygame.mixer.music.play(loops=-1)
 
 # constante para largura e altura da tela
 width = 800
 height = 400
+score_value = 0
+font = pygame.font.Font('freesansbold.ttf', 32)    
+
+textX = 10
+textY = 10
 
 player = kong.Player(width, height)
 barril = barrel.Enemy(width, height)
@@ -33,6 +38,11 @@ all_sprite.add(player)
 
 window = pygame.display.set_mode((width, height))
 
+def show_score(x, y):
+    score = font.render("Score: " + str(score_value), True, (0, 0, 0))
+    window.blit(score, (x,y))
+
+
 clock = pygame.time.Clock()
 
 ADDENEMY = pygame.USEREVENT + 1
@@ -46,6 +56,7 @@ while running:
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
                 player.jump()
+                score_value += 1
     
         elif event.type == QUIT:
             running = False
@@ -76,6 +87,8 @@ while running:
     if pygame.sprite.spritecollide(player, barril, dokill = True):
         player.kill()
         running = False
+
+    show_score(textX, textY )
         
     pygame.display.flip()
 
