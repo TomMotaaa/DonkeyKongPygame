@@ -1,11 +1,6 @@
 # Importa o módulo do pygame
 import pygame
-from pygame.locals import (
-    K_ESCAPE,
-    K_SPACE,
-    KEYDOWN,
-    QUIT,
-)
+from pygame.locals import*
 import kong
 import barrel
 import cloud
@@ -22,14 +17,16 @@ pygame.mixer.music.load("assets/steven-universe-instrumental.mp3")
 pygame.mixer.music.play(loops=-1)
 
 # constante para largura e altura da tela
-width = 600
-height = 450
+width = 800
+height = 400
+
 player = kong.Player(width, height)
 barril = barrel.Enemy(width, height)
 barril = pygame.sprite.Group()
 nuvem = cloud.Cloud(width, height)
 nuvem = pygame.sprite.Group()
 chao = plataforma.Platform()
+
 all_sprite = pygame.sprite.Group()
 all_sprite.add(chao)
 all_sprite.add(player)
@@ -47,9 +44,9 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                running = False
-        
+            if event.key == K_SPACE:
+                player.jump()
+    
         elif event.type == QUIT:
             running = False
 
@@ -61,8 +58,7 @@ while running:
         elif event.type == ADDCLOUD:
             new_cloud = cloud.Cloud(width, height)
             nuvem.add(new_cloud)
-            all_sprite.add(new_cloud)
-            
+            all_sprite.add(new_cloud) 
     
     pressed_keys = pygame.key.get_pressed()
 
@@ -77,7 +73,7 @@ while running:
 
     pygame.display.flip()
 
-    clock.tick(30)
+    clock.tick(60)
 
 pygame.mixer.music.stop()
 pygame.mixer.quit()

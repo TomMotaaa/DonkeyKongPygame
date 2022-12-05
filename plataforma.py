@@ -1,6 +1,6 @@
 import pygame
-WIDTH = 600
-HEIGHT = 450
+WIDTH = 800
+HEIGHT = 400
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self):

@@ -4,8 +4,8 @@ from pygame.locals import *
 vec = pygame.math.Vector2
 ACC = 0.5
 FRIC = -0.12
-WIDTH = 600
-HEIGHT = 450
+WIDTH = 800
+HEIGHT = 400
 
 
 class Player(pygame.sprite.Sprite) :
@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite) :
         super(Player, self).__init__()
         self.width = width
         self.heigth = heigth
-        self.surf = pygame.image.load("assets/pixil-frame-bro.png")
+        self.surf = pygame.image.load("assets/pixil-frame-bro-star.png")
         self.surf = pygame.transform.scale(self.surf, (150, 150))
         self.rect = self.surf.get_rect()
 
@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite) :
         self.acc = vec((0,0))
 
     def move(self, keys_pressed):
-        self.acc = vec((0,0.5))
+        self.acc = vec((0,0))
         if keys_pressed[ord("a")]:
             self.acc.x = -ACC
         if keys_pressed[ord("d")]:
@@ -38,3 +38,6 @@ class Player(pygame.sprite.Sprite) :
             self.pos.x = WIDTH
 
         self.rect.midbottom = self.pos
+
+    def jump(self):
+        self.vel.y = -15
