@@ -7,7 +7,7 @@ ACC = 0.5
 FRIC = -0.12
 WIDTH = 800
 HEIGHT = 400
-Plataforma1 = plataforma.Platform()
+chao = plataforma.Platform()
 
 
 class Player(pygame.sprite.Sprite) :
@@ -15,13 +15,24 @@ class Player(pygame.sprite.Sprite) :
         super(Player, self).__init__()
         self.width = width
         self.heigth = heigth
-        self.surf = pygame.image.load("assets/pixil-frame-bro-star.png")
-        self.surf = pygame.transform.scale(self.surf, (150, 150))
-        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
+        self.surf = pygame.image.load("assets/pixil-frame-1.png")
+        self.surf = pygame.transform.scale(self.surf, (30, 30))
+        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 78))
 
         self.pos = vec((10, 385))
         self.vel = vec((0,0))
         self.acc = vec((0,0))
+
+    def limite(self):
+        if self.rect.left < 0:
+            self.rect.left = 0
+            self.acc.x = ACC
+        if self.rect.right > self.width:
+            self.rect.right = self.width
+            self.acc.x = -ACC
+        if self.rect.bottom >= self.heigth-23:
+            self.rect.bottom = self.heigth
+            self.vel.y = -3
 
     def move(self, keys_pressed):
         self.acc = vec((0,0.5))
@@ -29,6 +40,7 @@ class Player(pygame.sprite.Sprite) :
             self.acc.x = -ACC
         if keys_pressed[ord("d")]:
             self.acc.x = ACC
+        self.limite()
 
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
@@ -41,15 +53,19 @@ class Player(pygame.sprite.Sprite) :
 
         self.rect.midbottom = self.pos
 
-    def jump(self):
-        self.vel.y = -10
-        
     def update(self):
-        hits = pygame.sprite.spritecollide(self.surf, plataforma, False)
-        if self.surf.vel.y > 0:
+        player = Player(WIDTH, HEIGHT)
+        hits = pygame.sprite.spritecollide(player, platforms, False)  
+        if player.vel.y > 0:   
             if hits:
-                self.pos.y = hits[0].rect.top + 1
                 self.vel.y = 0
-                
-    plataforma = pygame.sprite.Group()
-    plataforma.add(Plataforma1)
+                self.pos.y = hits[0].rect.top + 1
+
+    def jump(self):
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        if hits:
+            self.vel.y = -10
+
+
+platforms = pygame.sprite.Group()
+platforms.add(chao)

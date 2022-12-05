@@ -4,8 +4,8 @@ import random
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, width, heigth):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load("assets/pixil-frame-barrel.png")
-        self.surf = pygame.transform.scale(self.surf, (150, 150))
+        self.surf = pygame.image.load("assets/pixil-frame-0.png")
+        self.surf = pygame.transform.scale(self.surf, (22, 22))
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(width + 20, width + 100),

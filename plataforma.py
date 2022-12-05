@@ -5,8 +5,8 @@ HEIGHT = 400
 class Platform(pygame.sprite.Sprite):
     def __init__(self):
         super(Platform, self).__init__()
-        self.surf = pygame.image.load("assets/pixil-frame-earth.png")
-        self.surf = pygame.transform.scale(self.surf, (WIDTH, 350))
+        self.surf = pygame.image.load("assets/pixil-frame-2.png")
+        self.surf = pygame.transform.scale(self.surf, (WIDTH, 30))
         self.rect = self.surf.get_rect(
             center = (
                 (WIDTH/2),

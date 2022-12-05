@@ -1,7 +1,7 @@
 # Importa o módulo do pygame
 import pygame
 from pygame.locals import*
-import kong
+import kong 
 import barrel
 import cloud
 import plataforma
@@ -19,7 +19,6 @@ pygame.display.set_caption("Jogo Donkey Kong")
 # constante para largura e altura da tela
 width = 800
 height = 400
-puloMax = 150
 
 player = kong.Player(width, height)
 barril = barrel.Enemy(width, height)
@@ -47,8 +46,6 @@ while running:
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
                 player.jump()
-            elif player.vel.y == -15:
-                player.vel.y = 15
     
         elif event.type == QUIT:
             running = False
@@ -65,11 +62,13 @@ while running:
     
     pressed_keys = pygame.key.get_pressed()
 
-    player.move(pressed_keys)
+    player.update()
+
+    player.move(pressed_keys)  
     barril.update()
     nuvem.update()
     
-    window.fill((135, 206, 235))
+    window.fill((135, 206, 235)) 
 
     for entity in all_sprite:
         window.blit(entity.surf, entity.rect)
