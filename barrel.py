@@ -8,12 +8,12 @@ class Enemy(pygame.sprite.Sprite):
         super(Enemy, self).__init__()
         #Ajustando tamanho do inimigo visualmente
         self.surf = pygame.image.load("assets/pixil-frame-0.png")
-        self.surf = pygame.transform.scale(self.surf, (22, 22))
+        self.surf = pygame.transform.scale(self.surf, (40, 40))
         #Spawn do inimigo
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(width + 20, width + 100),
-                heigth-35
+                heigth-44
             )
         )
         #Velocidade do inimigo

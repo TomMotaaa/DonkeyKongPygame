@@ -21,9 +21,9 @@ class Player(pygame.sprite.Sprite) :
         self.isJump = False
         self.jumpCount = 10
         self.surf = pygame.image.load("assets/pixil-frame-1.png")
-        self.surf = pygame.transform.scale(self.surf, (30, 30))
+        self.surf = pygame.transform.scale(self.surf, (40, 40))
         #Spawn do player
-        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 78))
+        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 85))
 
         #Definindo a posição, velocidade e aceleração
         self.pos = vec((10, 385))
@@ -68,8 +68,8 @@ class Player(pygame.sprite.Sprite) :
             if self.jumpCount >= -10:
                 neg = 1
                 if self.jumpCount < 0:
-                    neg = -1
-                self.vel.y -= self.jumpCount*2 * 0.1 * neg
+                    neg = 0
+                self.vel.y -= self.jumpCount*2.2 * 0.1 * neg
                 self.jumpCount -= 1
             else:
                 self.isJump = False
